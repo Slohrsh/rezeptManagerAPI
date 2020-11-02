@@ -12,6 +12,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /**
  * Entity: woc01_wochenplan
  */
+var regeneratorRuntime = require("regenerator-runtime");
+
 var wochenplan = function wochenplan(sequelize, DataTypes) {
   var Wochenplan = sequelize.define('WOC01_WOCHENPLAN', {
     id: {

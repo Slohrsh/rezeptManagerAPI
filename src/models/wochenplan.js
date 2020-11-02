@@ -2,6 +2,8 @@
  * Entity: woc01_wochenplan
  */
 
+const regeneratorRuntime = require("regenerator-runtime");
+
 const wochenplan = (sequelize, DataTypes) => {
   const Wochenplan = sequelize.define('WOC01_WOCHENPLAN', {
     id: {

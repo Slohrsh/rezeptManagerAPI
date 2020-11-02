@@ -53,8 +53,6 @@ sequelize.sync({ force: eraseDatabaseOnSync}).then(async () => {
 
 });
 
-var imageData = FS.readFileSync(__dirname + '/img/tomate-mozzarella.jpg');
-
 const createRezept = async () => {
   await models.Rezept.create(
     {

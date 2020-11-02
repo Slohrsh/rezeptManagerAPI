@@ -89,8 +89,6 @@ _models.sequelize.sync({
   }, _callee2);
 })));
 
-var imageData = FS.readFileSync(__dirname + '/img/tomate-mozzarella.jpg');
-
 var createRezept = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
     return regeneratorRuntime.wrap(function _callee3$(_context3) {

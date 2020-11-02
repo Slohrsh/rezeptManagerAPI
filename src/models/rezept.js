@@ -3,6 +3,7 @@
  */
 
 const { Op } = require("sequelize");
+const regeneratorRuntime = require("regenerator-runtime");
 
 const rezept = (sequelize, DataTypes) => {
   const Rezept = sequelize.define('REZ01_REZEPT', {

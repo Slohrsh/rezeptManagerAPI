@@ -2,6 +2,7 @@
  * Entity: REZ02_ZUTAT
  */
 const { Op } = require("sequelize");
+const regeneratorRuntime = require("regenerator-runtime");
 
  const zutat = (sequelize, DataTypes) => {
     const Zutat = sequelize.define('REZ02_ZUTAT', {

@@ -17,6 +17,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var _require = require("sequelize"),
     Op = _require.Op;
 
+var regeneratorRuntime = require("regenerator-runtime");
+
 var rezeptZutat = function rezeptZutat(sequelize, DataTypes) {
   var RezeptZutat = sequelize.define('REZ70_REZEPT_ZUTATEN', {
     menge: {
