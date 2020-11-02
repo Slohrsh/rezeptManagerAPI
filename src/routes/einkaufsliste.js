@@ -1,5 +1,8 @@
 import { Router } from 'express';
+import { sequelize } from '../models';
 import { EinkaufslisteEintragView, Menge } from '../models/dto/einkaufslisteEintragView';
+
+const { QueryTypes } = require('sequelize');
 
 const router = Router();
 
@@ -43,72 +46,35 @@ router.post('/check', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-    const einkaufsliste = await req.context.models.Einkaufsliste.findAll();
-    const mengeIds = [];
+    const einkaufsliste = await sequelize.query(
+        "select sum(rez70.menge) menge, rez70.einheit, rez02.beschreibung, group_concat(rez70.REZ01REZEPTId separator ', ') as rezeptIds from EIN1_EINKAUFSLISTEs ein1 "
+        + "join REZ70_REZEPT_ZUTATENs rez70 on rez70.id = ein1.REZ70REZEPTZUTATENId "
+        + "join REZ02_ZUTATs rez02 on rez02.id = rez70.REZ02ZUTATId "
+        + "group by rez70.einheit, rez02.beschreibung "
+        + "order by rez02.beschreibung", { type: QueryTypes.SELECT });
 
-    einkaufsliste.forEach(
-        (eintrag) => {
-            mengeIds.push(eintrag.REZ70REZEPTZUTATENId);
-        }
-    )
+    const eintraege = [];
 
-    const zutatenIDs = [];
-
-    const mengen = await req.context.models.RezeptZutat.findMengen(mengeIds);
-    mengen.forEach(
-        (menge) => {
-            zutatenIDs.push(menge.REZ02ZUTATId);
-        }
-    )
-
-    const zutaten = await req.context.models.Zutat.findZutaten(mengeIds);
-    const eintraege = new Map();
-
-    for (let i = 0; i < einkaufsliste.length; i++) {
-        let foundMenge;
-
-        mengen.forEach((menge) => {
-            if (menge.id === einkaufsliste[i].REZ70REZEPTZUTATENId) {
-                foundMenge = menge;
+    einkaufsliste.forEach((item) => {
+        item.rezeptIds = item.rezeptIds.split(',');
+        item.mengen = [new Menge(item.einheit, item.menge)]
+        item.einheit = undefined;
+        item.menge = undefined;
+        let foundItem;
+        eintraege.forEach((eintrag) => {
+            if(eintrag.beschreibung === item.beschreibung){
+                foundItem = true;
+                item.mengen.push(new Menge(item.einheit, item.menge))
             }
         });
 
-        let foundZutat;
-
-        zutaten.forEach((zutat) => {
-            if (zutat.id === foundMenge.REZ02ZUTATId) {
-                foundZutat = zutat;
-            }
-        });
-
-        let eintrag = eintraege.get(foundZutat.beschreibung);
-        if (!eintrag) {
-            eintrag = new EinkaufslisteEintragView(
-                [einkaufsliste[i].id],
-                einkaufsliste[i].checked === null || einkaufsliste[i].checked === false 
-                    ? false : true,
-                [new Menge(foundMenge.einheit, foundMenge.menge)],
-                foundZutat.beschreibung,
-                [foundMenge.REZ01REZEPTId])
-            eintraege.set(foundZutat.beschreibung, eintrag);
-        } else {
-            let mengeUpdated = false;
-            eintrag.mengen.forEach((menge) => {
-                if (menge.einheit === foundMenge.einheit) {
-                    menge.menge += foundMenge.menge;
-                    mengeUpdated = true;
-                }
-            });
-            eintrag.ids.push(einkaufsliste[i].id);
-            eintrag.rezeptIds.push(foundMenge.REZ01REZEPTId);
-            if (!mengeUpdated) {
-                eintrag.mengen.push(new Menge(foundMenge.einheit, foundMenge.menge));
-            }
+        if(!foundItem){
+            eintraege.push(item);
         }
-    }
+    });
 
 
-    return res.send(Array.from(eintraege.values()));
+    return res.send(einkaufsliste);
 });
 
 export default router;

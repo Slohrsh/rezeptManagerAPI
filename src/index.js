@@ -39,7 +39,7 @@ app.use('/api/favorit', routes.favorit);
 app.use('/api/einkaufsliste', routes.einkaufsliste);
 
 // * Start * //
-const eraseDatabaseOnSync = true;
+const eraseDatabaseOnSync = false;
 
 sequelize.sync({ force: eraseDatabaseOnSync}).then(async () => {
 
