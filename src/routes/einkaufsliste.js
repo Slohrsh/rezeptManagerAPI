@@ -46,8 +46,15 @@ router.post('/check', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
+    let listAggStringDialect;
+    if(process.env.PORT) {
+        listAggStringDialect = "string_agg(rez70.REZ01REZEPTId,',') ";
+    } else {
+        listAggStringDialect = "group_concat(rez70.REZ01REZEPTId separator ', ')";
+    }
+
     const einkaufsliste = await sequelize.query(
-        "select sum(rez70.menge) menge, rez70.einheit, rez02.beschreibung, group_concat(rez70.REZ01REZEPTId separator ', ') as rezeptIds from EIN1_EINKAUFSLISTEs ein1 "
+        "select sum(rez70.menge) menge, rez70.einheit, rez02.beschreibung, " + listAggStringDialect + " as rezeptIds from EIN1_EINKAUFSLISTEs ein1 "
         + "join REZ70_REZEPT_ZUTATENs rez70 on rez70.id = ein1.REZ70REZEPTZUTATENId "
         + "join REZ02_ZUTATs rez02 on rez02.id = rez70.REZ02ZUTATId "
         + "group by rez70.einheit, rez02.beschreibung "
