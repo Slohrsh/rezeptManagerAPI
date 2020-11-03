@@ -3,7 +3,7 @@
  */
 
 const einkaufsliste = (sequelize, DataTypes) => {
-    const Einkaufsliste = sequelize.define('EIN1_EINKAUFSLISTE', {
+    const Einkaufsliste = sequelize.define('EIN01_EINKAUFSLISTE', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
