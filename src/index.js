@@ -47,8 +47,8 @@ sequelize.sync({ force: eraseDatabaseOnSync}).then(async () => {
     createRezept();
   }
 
-  app.listen(process.env.PORT | 3000, () =>
-    console.log(`App listening on port ${process.env.PORT | 3000}!`),
+  app.listen(process.env.PORT || 3000, () =>
+    console.log(`App listening on port ${process.env.PORT || 3000}!`),
   );
 
 });
