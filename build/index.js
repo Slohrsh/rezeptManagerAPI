@@ -77,8 +77,8 @@ _models.sequelize.sync({
             createRezept();
           }
 
-          app.listen(process.env.PORT, function () {
-            return console.log("Example app listening on port ".concat(process.env.PORT, "!"));
+          app.listen(process.env.PORT | 3000, function () {
+            return console.log("App listening on port ".concat(process.env.PORT | 3000, "!"));
           });
 
         case 2:
