@@ -6,8 +6,8 @@ if (process.env.DATABASE_URL) {
     {
       dialect: 'postgres',
       protocol: 'postgres',
-      port: rocess.env.DATABASE_PORT,
-      host: rocess.env.DATABASE_HOST,
+      port: process.env.DATABASE_PORT,
+      host: process.env.DATABASE_HOST,
       logging: true //false
     },
   );
