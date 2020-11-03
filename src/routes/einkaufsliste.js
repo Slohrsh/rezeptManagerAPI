@@ -49,11 +49,13 @@ router.get('/', async (req, res) => {
     let sql;
     if(process.env.PORT) {
         sql = "select sum(rez70.menge) menge, rez70.einheit, rez02.beschreibung, string_agg('' || "
-        + ' rez70."REZ01REZEPTId", ',' order by rez70."REZ01REZEPTId") as rezeptIds from "EIN01_EINKAUFSLISTEs" ein01 '
-        + 'join "REZ70_REZEPT_ZUTATENs" rez70 on rez70.id = ein01."REZ70REZEPTZUTATENId" '
-        + 'join "REZ02_ZUTATs" rez02 on rez02.id = rez70."REZ02ZUTATId" '
-        + 'group by rez70.einheit, rez02.beschreibung '
-        + 'order by rez02.beschreibung '
+        + ' rez70."REZ01REZEPTId", '
+        +  " ',' order by "
+        + ' rez70."REZ01REZEPTId") as rezeptIds from "EIN01_EINKAUFSLISTEs" ein01 '
+        + ' join "REZ70_REZEPT_ZUTATENs" rez70 on rez70.id = ein01."REZ70REZEPTZUTATENId" '
+        + ' join "REZ02_ZUTATs" rez02 on rez02.id = rez70."REZ02ZUTATId" '
+        + ' group by rez70.einheit, rez02.beschreibung '
+        + ' order by rez02.beschreibung '
     } else {
         sql = "select sum(rez70.menge) menge, rez70.einheit, rez02.beschreibung, group_concat(rez70.REZ01REZEPTId separator ', ') as rezeptIds from EIN1_EINKAUFSLISTEs ein1 "
         + "join REZ70_REZEPT_ZUTATENs rez70 on rez70.id = ein1.REZ70REZEPTZUTATENId "
