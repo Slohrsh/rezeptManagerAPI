@@ -54,9 +54,9 @@ router.get('/', async (req, res) => {
     }
 
     const einkaufsliste = await sequelize.query(
-        "select sum(rez70.menge) menge, rez70.einheit, rez02.beschreibung, " + listAggStringDialect + " as rezeptIds from EIN01_EINKAUFSLISTEs ein01 "
-        + "join REZ70_REZEPT_ZUTATENs rez70 on rez70.id = ein01.REZ70REZEPTZUTATENId "
-        + "join REZ02_ZUTATs rez02 on rez02.id = rez70.REZ02ZUTATId "
+        'select sum(rez70.menge) menge, rez70.einheit, rez02.beschreibung, ' + listAggStringDialect + ' as rezeptIds from "EIN01_EINKAUFSLISTEs" ein01 '
+        + 'join "REZ70_REZEPT_ZUTATENs" rez70 on rez70.id = ein01.REZ70REZEPTZUTATENId '
+        + 'join "REZ02_ZUTATs" rez02 on rez02.id = rez70.REZ02ZUTATId '
         + "group by rez70.einheit, rez02.beschreibung "
         + "order by rez02.beschreibung", { type: QueryTypes.SELECT });
 
