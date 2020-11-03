@@ -1,8 +1,8 @@
 import Sequelize from 'sequelize';
 
-
+let sequelize;
 if (process.env.DATABASE_URL) {
-  const sequelize = new Sequelize(process.env.DATABASE_URL,
+  sequelize = new Sequelize(process.env.DATABASE_URL,
     {
       dialect: 'postgres',
       protocol: 'postgres',
@@ -12,7 +12,7 @@ if (process.env.DATABASE_URL) {
     },
   );
 } else {
-  const sequelize = new Sequelize(
+  sequelize = new Sequelize(
     process.env.DATABASE,
     process.env.DATABASE_USER,
     process.env.DATABASE_PASSWORD,
